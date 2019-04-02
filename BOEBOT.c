@@ -41,33 +41,36 @@ void HappyState()
     }
     ///////SWITCH////////  
     
-    servo_speed(14,0);
-    servo_speed(15,0);
-    
     adc_init(21, 20, 19, 18);
     float v1;
-  
-    v1 = adc_volts(2);                  // Check A/D 1
-    print("Sound Happy %f V\n", v1);                // Display volts
-  
-    if(v1 > 1.2) //1.2V on batteries, 0.06V on plug
-    {
-      InteractHappy();
-    }      
-    pause(100);                        // Wait 1/10 s
-  }
+    while(1){
+      servo_speed(14,50);
+      servo_speed(15,50);   
+      //1 is red, 2 is green, 3 is blue
+      high(2);
+      high(1);
+      pause(200);        
+      low(2); 
+      low(1); 
+      v1 = adc_volts(0);
+      print("Happy Flex = %f V\n", v1);
+      if(v1>1.9 || v1<1.1)
+      {
+        InteractHappy();
+      }      
+      pause(100);                               // Wait 1/10 s
   return;    
 }  
 
 void InteractHappy()
 {
-  servo_speed(14,200);
-  servo_speed(15,200);
-  high(26);
-  high(27);
-  pause(2000);
-  low(26);
-  low(27);
+  int *song1_cog = cog_run(song1,128); 
+  int *song2_cog = cog_run(song2,128);
+  int *dance_cog = cog_run(dance,128);
+  pause(15000);
+  cog_end(song1_cog);
+  cog_end(song2_cog);
+  cog_end(dance_cog);
   return;
 }
 
@@ -947,5 +950,279 @@ void mobamba3(){
   freqout(pin,SN,B2);
   pause(SN);
   }  
-}    
+}
+int dance()
+{
+  pause(QUARTER_NOTE);
+  pause(EIGHTH_NOTE);
+  servo_speed(14,200);
+  servo_speed(15,200);
+  pause(QUARTER_NOTE);
+  servo_speed(14,0);
+  servo_speed(15,0);
+  pause(QUARTER_NOTE);
+  pause(EIGHTH_NOTE);
+  servo_speed(14,-200);
+  servo_speed(15,-200);
+  pause(SIXTEENTH_NOTE);
+  pause(SIXTEENTH_NOTE);
+  pause(SIXTEENTH_NOTE);
+  pause(EIGHTH_NOTE);
+  pause(SIXTEENTH_NOTE);
+  pause(SIXTEENTH_NOTE);
+  pause(SIXTEENTH_NOTE);
+  servo_speed(14,0);
+  servo_speed(15,0);
+  pause(EN);
+  servo_speed(14,200);
+  servo_speed(15,200);
+  pause(EN);
+  pause(EN);
+  pause(EN);
+  pause(EN);
+  servo_speed(14,0);
+  servo_speed(15,0);
+  pause(EN);
+  pause(EN);
+  servo_speed(14,200);
+  servo_speed(15,-200);
+  pause(QN);
+   pause(QUARTER_NOTE);
+   servo_speed(14,0);
+   servo_speed(15,0);
+   pause(EIGHTH_NOTE);
+   pause(QUARTER_NOTE);
+   servo_speed(14,-200);
+   servo_speed(15,200);
+   pause(QUARTER_NOTE);
+  //slur
+   pause(EIGHTH_NOTE);
+   pause(EIGHTH_NOTE);
+   servo_speed(14,0);
+   servo_speed(15,0);   
+   pause(QUARTER_NOTE);
+   servo_speed(14,-200);
+   servo_speed(15,200);
+   pause(QUARTER_NOTE);
+   servo_speed(14,200);
+   servo_speed(15,-200);
+   pause(SIXTEENTH_NOTE);
+   pause(QN);
+   servo_speed(14,0);
+   servo_speed(15,0);
+   pause(SIXTEENTH_NOTE);
+   pause(QUARTER_NOTE);//rest
+   servo_speed(14,200);
+   servo_speed(15,200);
+   pause(QN);
+   servo_speed(14,0);
+   servo_speed(15,0);
+   pause(QN);
+   servo_speed(14,-200);
+   servo_speed(15,-200);
+   pause(QN);
+   servo_speed(14,0);
+   servo_speed(15,0);
+   pause(SIXTEENTH_NOTE);
+   pause(SIXTEENTH_NOTE);
+   servo_speed(14,200);
+   servo_speed(15,200);
+   pause(QN);
+   servo_speed(14,0);
+   servo_speed(15,0);
+   servo_speed(14,-200);
+   servo_speed(15,-200);
+   pause(QN);
+   servo_speed(14,0);
+   servo_speed(15,0);
+   servo_speed(14,200);
+   servo_speed(15,200);
+   pause(QN);
+   servo_speed(14,0);
+   servo_speed(15,0);
+   servo_speed(14,-200);
+   servo_speed(15,-200);
+   pause(QN);
+   servo_speed(14,0);
+   servo_speed(15,0);
+}
+  
+int song1()
+{
+  int counter=0;
+  int pin=0;
+  while(counter<1)
+  {
+   freqout(pin,100,F6);
+   pause(QUARTER_NOTE);
+   freqout(pin,100,A6);
+   pause(EIGHTH_NOTE);
+   freqout(pin,100,C7);
+   pause(QUARTER_NOTE);
+   freqout(pin,100,A6);
+   pause(QUARTER_NOTE);
+   freqout(pin,100,F6);
+   pause(EIGHTH_NOTE);
+   
+   freqout(pin,100,D6);
+   pause(SIXTEENTH_NOTE);
+   freqout(pin,100,D6);
+   pause(SIXTEENTH_NOTE);
+   freqout(pin,100,D6);
+   pause(SIXTEENTH_NOTE);
+   pause(EIGHTH_NOTE);//rest
+   
+   freqout(pin,100,F7); //F1
+   pause(SIXTEENTH_NOTE);
+   freqout(pin,100,F7); 
+   pause(SIXTEENTH_NOTE);
+   freqout(pin,100,F7); 
+   pause(SIXTEENTH_NOTE);
+   pause(EIGHTH_NOTE);//rest
+   
+   freqout(pin,250,C6);//slur
+   freqout(pin,100,D6);
+   pause(EIGHTH_NOTE);
+   freqout(pin,100,F6);
+   pause(EIGHTH_NOTE);
+   freqout(pin,100,A6);
+   pause(EIGHTH_NOTE);
+   freqout(pin,100,C7);
+   pause(EIGHTH_NOTE);
+   freqout(pin,100,A6);
+   pause(EIGHTH_NOTE);
+   freqout(pin,100,F6);
+   pause(EIGHTH_NOTE);
+   
+  //slur
+   freqout(pin,500,E7);
+   freqout(pin,250,Ds7Eb7);
+   freqout(pin,250,D7);
+   
+   pause(QUARTER_NOTE);//rest
+   
+   freqout(pin,100,Gs6Ab6);
+   pause(QUARTER_NOTE);
+   freqout(pin,100,C7);
+   pause(EIGHTH_NOTE);
+   freqout(pin,100,F6);
+   pause(QUARTER_NOTE);
+   freqout(pin,100,C7);
+   pause(QUARTER_NOTE);
+   //try to slur
+   freqout(pin,250,Gs6Ab6);
+   freqout(pin,250,G6);
+   freqout(pin,100,C7);
+   pause(EIGHTH_NOTE);
+   freqout(pin,100,G6);
+   pause(EIGHTH_NOTE);
+   freqout(pin,100,F6);
+   pause(QUARTER_NOTE);
+   freqout(pin,100,E6);
+   pause(QUARTER_NOTE);
+   freqout(pin,100,E6);
+   pause(SIXTEENTH_NOTE);
+   freqout(pin,100,E6);
+   pause(SIXTEENTH_NOTE);
+   freqout(pin,100,E6);
+   pause(QUARTER_NOTE);//rest
+   freqout(pin,100,E6);
+   pause(SIXTEENTH_NOTE);
+   freqout(pin,100,E6);
+   pause(SIXTEENTH_NOTE);
+   freqout(pin,100,E6);
+   pause(1000);
+   counter++;
+  }  
+  return;
+}  
+int song2()
+{
+  int counter=0;
+  int pin=6;
+  while(counter<1)
+  {
+   freqout(pin,100,F6);
+   pause(QUARTER_NOTE);
+   freqout(pin,100,A6);
+   pause(EIGHTH_NOTE);
+   freqout(pin,100,C7);
+   pause(QUARTER_NOTE);
+   freqout(pin,100,A6);
+   pause(QUARTER_NOTE);
+   freqout(pin,100,F6);
+   pause(EIGHTH_NOTE);
+   
+   freqout(pin,100,D6);
+   pause(SIXTEENTH_NOTE);
+   freqout(pin,100,D6);
+   pause(SIXTEENTH_NOTE);
+   freqout(pin,100,D6);
+   pause(SIXTEENTH_NOTE);
+   pause(EIGHTH_NOTE);//rest
+   
+   freqout(pin,100,F7); //F1
+   pause(SIXTEENTH_NOTE);
+   freqout(pin,100,F7); 
+   pause(SIXTEENTH_NOTE);
+   freqout(pin,100,F7); 
+   pause(SIXTEENTH_NOTE);
+   pause(EIGHTH_NOTE);//rest
+   
+   freqout(pin,250,C6);//slur
+   freqout(pin,100,D6);
+   pause(EIGHTH_NOTE);
+   freqout(pin,100,F6);
+   pause(EIGHTH_NOTE);
+   freqout(pin,100,A6);
+   pause(EIGHTH_NOTE);
+   freqout(pin,100,C7);
+   pause(EIGHTH_NOTE);
+   freqout(pin,100,A6);
+   pause(EIGHTH_NOTE);
+   freqout(pin,100,F6);
+   pause(EIGHTH_NOTE);
+   
+  //slur
+   freqout(pin,500,E7);
+   freqout(pin,250,Ds7Eb7);
+   freqout(pin,250,D7);
+   
+   pause(QUARTER_NOTE);//rest
+   
+   freqout(pin,100,Gs6Ab6);
+   pause(QUARTER_NOTE);
+   freqout(pin,100,C7);
+   pause(EIGHTH_NOTE);
+   freqout(pin,100,F6);
+   pause(QUARTER_NOTE);
+   freqout(pin,100,C7);
+   pause(QUARTER_NOTE);
+   //try to slur
+   freqout(pin,250,Gs6Ab6);
+   freqout(pin,250,G6);
+   freqout(pin,100,C7);
+   pause(EIGHTH_NOTE);
+   freqout(pin,100,G6);
+   pause(EIGHTH_NOTE);
+   freqout(pin,100,F6);
+   pause(QUARTER_NOTE);
+   freqout(pin,100,E6);
+   pause(QUARTER_NOTE);
+   freqout(pin,100,E6);
+   pause(SIXTEENTH_NOTE);
+   freqout(pin,100,E6);
+   pause(SIXTEENTH_NOTE);
+   freqout(pin,100,E6);
+   pause(QUARTER_NOTE);//rest
+   freqout(pin,100,E6);
+   pause(SIXTEENTH_NOTE);
+   freqout(pin,100,E6);
+   pause(SIXTEENTH_NOTE);
+   freqout(pin,100,E6);
+   pause(1000);
+   counter++;
+  }  
+  return;
+}
 ///////////***MUSIC***/////////////
